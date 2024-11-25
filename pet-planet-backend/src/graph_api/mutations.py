@@ -19,9 +19,17 @@ class UpdatePet(Mutation):
     def mutate(self, info, id, name, available):
         pet = Pet.objects.get(id=id)
         pet.name = name
-        pet.available = available
-        pet.save()
-        return UpdatePet(success=True)
+        
+        #pet.save()
+        #return UpdatePet(success=True)
+
+        #update only is the pet is avaliable
+        if(pet.available != True):
+            return UpdatePet(success=False)
+        else:
+            pet.available = available   
+            pet.save()
+            return UpdatePet(success=True)
 
 
 class Mutations(ObjectType):
